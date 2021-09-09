@@ -78,6 +78,7 @@ def home(request):
 
     covid_querystring_today = {"name":"Argentina","date":"2020-04-01"}
 
+    # ! 1 request por segundo
     time.sleep(1)
 
     covid_response_today = requests.request("GET",covid_url_today, headers=covid_headers, params=covid_querystring_today).json()
@@ -88,6 +89,12 @@ def home(request):
         'deaths': covid_response_today[0]['provinces'][0]['deaths']
     }
 
+
+    # ------------------------------------ DOLAR API -----------------------------------------------
+
+    dolar_url = "https://api.bluelytics.com.ar/v2/latest"
+
+    dolar_data = requests.request("GET",dolar_url).json()
 
     # ------------------------------------ NEWS API -----------------------------------------------
 
@@ -112,7 +119,8 @@ def home(request):
 
     # ----------------
 
-    context = {'weather_data' : weather_data, 'covid_data': covid_data, 'covid_data_today':covid_data_today,'news_data': news_data, 'form' : form}
+    context = {'weather_data' : weather_data, 'covid_data': covid_data, 'dolar_data': dolar_data,
+                'covid_data_today':covid_data_today,'news_data': news_data, 'form' : form}
 
     return render(request, 'index.html', context)
 

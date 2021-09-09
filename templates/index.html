@@ -9,25 +9,32 @@
     <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css" />
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo&family=Roboto:wght@100&display=swap" rel="stylesheet">    
 </head>
 <body>
     <section>
-        <div class="title-container p-3">
+        <div class="title-container p-4">
             <div class="row align-items-center">
                 <div class="col text-center">
-                    <h1 class="">
+                    <p class="display-1">
                         Noticias Argentina <i class="fas fa-newspaper"></i>
-                    </h1>
+                    </p>
                 </div>
             </div>
         </div>
 
-        <div class="title-container-2 navbar p-3">
-            <p class="navbar-brand ">Mariano Chavez - 42966</p>
+        <div class="title-container-2 navbar p-2">
+            <p class="navbar-brand ">
+                    Dolar Oficial <i class="fas fa-arrow-right"></i> ${{dolar_data.oficial.value_buy}} - ${{dolar_data.oficial.value_sell}}
+                <br>Dolar Blue <i class="fas fa-arrow-right"></i> ${{dolar_data.blue.value_buy}} - ${{dolar_data.blue.value_sell}}
+                <br>Euro <i class="fas fa-arrow-right"></i> ${{dolar_data.oficial_euro.value_buy}} - ${{dolar_data.oficial_euro.value_sell}}
+            </p>
             <form method="POST" class="form-inline">
                 {% csrf_token %}
                 {{form.name}}
-                <button class="btn btn-outline-success" type="submit"><i class="fa fa-search"></i></button>
+                <button class="btn btn-dark" type="submit"><i class="fa fa-search"></i></button>
             </form>
         </div>
             
@@ -36,7 +43,7 @@
     
     
     <section>
-        <div class="container p-3 weather-container">
+        <div class="container p-4 weather-container">
             <div class="row">
                 {% for weather in weather_data %}
                 <div class="col">
@@ -120,7 +127,12 @@
     </section>
     
     
-    <footer class="footer">
+    <footer class="bg-dark">
+
+        <div class=" text-center py-4 text-white">© 2021 Copyright
+        <a href="https://github.com/marianochavez"> <h3>Mariano Chavez - 42966</h3></a>
+        </div>
+    
     </footer>
 </body>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
