@@ -1,0 +1,132 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Noticias Argentina</title>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <section>
+        <div class="container bg-dark p-3">
+            <div class="row align-items-center">
+                <div class="col text-center">
+                    <h1 class="text-white">
+                        Noticias Argentina <i class="fas fa-newspaper"></i>
+                    </h1>
+                </div>
+                <!-- <div class="col text-right">
+                    <h3 class="text-white">Mariano Chavez <small>42966</small></h3>
+                </div> -->
+            </div>
+        </div>
+
+        <div class="container navbar bg-dark p-3">
+            <a class="navbar-brand">Mariano Chavez - 42966</a>
+            <form method="POST" class="form-inline">
+                {% csrf_token %}
+                <input class="form-control" type="search" placeholder="Buscar Ciudad" aria-label="{{form.name}}">
+                <button class="btn btn-outline-success" type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+            
+    </section>
+    
+    
+    
+    <section>
+        <div class="container p-3 weather-container">
+            <div class="row">
+                {% for weather in weather_data %}
+                <div class="col">
+                    <div class="card flex-row flex-wrap border-dark">
+                        <div class="card-header border-0">
+                            <img src="http://openweathermap.org/img/w/{{ weather.icon }}.png" alt="">
+                        </div>
+                        <div class="card-block px-2">
+                            <h4 class="card-title">{{ weather.city }} - <span>{{weather.country}}</h4>
+                            <small class="card-text">
+                                Actual:{{ weather.temperature }}°
+                                <br>
+                                Sensación: {{ weather.feels_like }}°
+                                <br>
+                                Humedad: {{ weather.humidity }}%
+                                <br>
+                                {{ weather.description }}
+                            </small>
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="card-footer w-100 text-muted text-center">
+                            <a href="{% url 'city_delete' weather.city.id %}"  class="btn btn-sm btn-danger ">Eliminar</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                </div>
+            </div>    
+    </section>
+
+    <section>
+        <div class="container p-3 covid-container">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="list">COVID-19 - {{covid_data.country}}</h3>
+                </div>
+                <div class="col">
+                    <ul class="list-group list-group-horizontal">
+                        <li class="list-group-item"><strong>Contagiados:</strong> {{covid_data.confirmed}}</li>
+                        <li class="list-group-item"><strong>Recuperados:</strong> {{covid_data.recovered}}</li>
+                        <li class="list-group-item"><strong>Muertes:</strong> {{covid_data.deaths}}</li>
+                      </ul>
+                </div>
+            </div>
+            
+        </div>    
+    </section>
+
+    <div class="container pt-3 pb-3 news-container">
+        <h3 class="text-center">Ultimos Títulos</h3>
+        <hr>
+        {% for news in news_data %}
+        <div class="row d-flex justify-content-center mb-2">
+            <div class="col-sm-15 col-md-8 col-lg-8 py-0 pl-3 pr-1 featcard">
+                <div id="featured" class="carousel slide carousel-fade" data-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <div class="card bg-dark text-white"> <img class="card-img img-fluid" src="{{news.urlToImage}}" alt="">
+                                <div class="card-img-overlay d-flex linkfeat"> 
+                                    <a href="{{news.url}}" class="align-self-end"> <span class="badge">{{news.source}}</span>
+                                        <h4 class="card-title">{{news.title}}</h4>
+                                        <p class="textfeat" style="display: none;">{{news.description}}</p>
+                                    </a> </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <footer class="footer">
+    </footer>
+</body>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+$(".linkfeat").hover(
+function () {
+$(".textfeat").show(500);
+},
+function () {
+$(".textfeat").hide(500);
+}
+);
+});
+</script>
+</html>
