@@ -2,6 +2,7 @@ from django.shortcuts import redirect, render
 import requests
 from .models import City
 from .forms import CityForm
+import time
 
 
 def home(request):
@@ -57,21 +58,36 @@ def home(request):
 
     covid_url = "https://covid-19-data.p.rapidapi.com/country"
 
-    covid_querystring = {"name":"argentina"}
+    covid_querystring_total = {"name":"Argentina"}
 
     covid_headers = {
     'x-rapidapi-host': "covid-19-data.p.rapidapi.com",
     'x-rapidapi-key': "01bd746841mshdd8087279d8e13ep16808cjsnc6581bea947b"
     }
 
-    covid_response = requests.request("GET", covid_url, headers=covid_headers, params=covid_querystring).json()
+    covid_response_total = requests.request("GET", covid_url, headers=covid_headers, params=covid_querystring_total).json()
 
     covid_data = {
-        'country': covid_response[0]['country'],
-        'confirmed': covid_response[0]['confirmed'],
-        'recovered': covid_response[0]['recovered'],
-        'deaths': covid_response[0]['deaths']
+        'country': covid_response_total[0]['country'],
+        'confirmed': covid_response_total[0]['confirmed'],
+        'recovered': covid_response_total[0]['recovered'],
+        'deaths': covid_response_total[0]['deaths']
     }
+
+    covid_url_today = "https://covid-19-data.p.rapidapi.com/report/country/name"
+
+    covid_querystring_today = {"name":"Argentina","date":"2020-04-01"}
+
+    time.sleep(1)
+
+    covid_response_today = requests.request("GET",covid_url_today, headers=covid_headers, params=covid_querystring_today).json()
+
+    covid_data_today = {
+        'confirmed': covid_response_today[0]['provinces'][0]['confirmed'],
+        'recovered': covid_response_today[0]['provinces'][0]['recovered'],
+        'deaths': covid_response_today[0]['provinces'][0]['deaths']
+    }
+
 
     # ------------------------------------ NEWS API -----------------------------------------------
 
@@ -96,7 +112,7 @@ def home(request):
 
     # ----------------
 
-    context = {'weather_data' : weather_data, 'covid_data': covid_data, 'news_data': news_data, 'form' : form}
+    context = {'weather_data' : weather_data, 'covid_data': covid_data, 'covid_data_today':covid_data_today,'news_data': news_data, 'form' : form}
 
     return render(request, 'index.html', context)
 

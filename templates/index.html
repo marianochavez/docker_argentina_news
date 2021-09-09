@@ -12,24 +12,21 @@
 </head>
 <body>
     <section>
-        <div class="container bg-dark p-3">
+        <div class="title-container p-3">
             <div class="row align-items-center">
                 <div class="col text-center">
-                    <h1 class="text-white">
+                    <h1 class="">
                         Noticias Argentina <i class="fas fa-newspaper"></i>
                     </h1>
                 </div>
-                <!-- <div class="col text-right">
-                    <h3 class="text-white">Mariano Chavez <small>42966</small></h3>
-                </div> -->
             </div>
         </div>
 
-        <div class="container navbar bg-dark p-3">
-            <a class="navbar-brand">Mariano Chavez - 42966</a>
+        <div class="title-container-2 navbar p-3">
+            <p class="navbar-brand ">Mariano Chavez - 42966</p>
             <form method="POST" class="form-inline">
                 {% csrf_token %}
-                <input class="form-control" type="search" placeholder="Buscar Ciudad" aria-label="{{form.name}}">
+                {{form.name}}
                 <button class="btn btn-outline-success" type="submit"><i class="fa fa-search"></i></button>
             </form>
         </div>
@@ -50,7 +47,7 @@
                         <div class="card-block px-2">
                             <h4 class="card-title">{{ weather.city }} - <span>{{weather.country}}</h4>
                             <small class="card-text">
-                                Actual:{{ weather.temperature }}°
+                                Actual: <strong>{{ weather.temperature }}°</strong>
                                 <br>
                                 Sensación: {{ weather.feels_like }}°
                                 <br>
@@ -60,8 +57,8 @@
                             </small>
                         </div>
                         <div class="w-100"></div>
-                        <div class="card-footer w-100 text-muted text-center">
-                            <a href="{% url 'city_delete' weather.city.id %}"  class="btn btn-sm btn-danger ">Eliminar</a>
+                        <div class="card-footer w-100 text-muted text-right">
+                            <a href="{% url 'city_delete' weather.city.id %}"  class="btn btn-sm btn-danger "><i class="fa fa-trash"></i></a>
                         </div>
                     </div>
                 </div>
@@ -74,43 +71,54 @@
         <div class="container p-3 covid-container">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="list">COVID-19 - {{covid_data.country}}</h3>
+                    <h2><strong>COVID-19</strong> - {{covid_data.country}}</h2>
                 </div>
                 <div class="col">
-                    <ul class="list-group list-group-horizontal">
+                    <h4 class="text-center text-white">HOY</h4>
+                    <ul class="list-group border-dark">
+                        <li class="list-group-item"><strong>Contagiados:</strong> {{covid_data_today.confirmed}}</li>
+                        <li class="list-group-item"><strong>Recuperados:</strong> {{covid_data_today.recovered}}</li>
+                        <li class="list-group-item"><strong>Muertes:</strong> {{covid_data_today.deaths}}</li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <h4 class="text-center text-white">TOTAL</h4>
+                    <ul class="list-group">
                         <li class="list-group-item"><strong>Contagiados:</strong> {{covid_data.confirmed}}</li>
                         <li class="list-group-item"><strong>Recuperados:</strong> {{covid_data.recovered}}</li>
                         <li class="list-group-item"><strong>Muertes:</strong> {{covid_data.deaths}}</li>
-                      </ul>
+                    </ul>
                 </div>
             </div>
-            
         </div>    
     </section>
 
-    <div class="container pt-3 pb-3 news-container">
-        <h3 class="text-center">Ultimos Títulos</h3>
-        <hr>
-        {% for news in news_data %}
-        <div class="row d-flex justify-content-center mb-2">
-            <div class="col-sm-15 col-md-8 col-lg-8 py-0 pl-3 pr-1 featcard">
-                <div id="featured" class="carousel slide carousel-fade" data-ride="carousel">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <div class="card bg-dark text-white"> <img class="card-img img-fluid" src="{{news.urlToImage}}" alt="">
-                                <div class="card-img-overlay d-flex linkfeat"> 
-                                    <a href="{{news.url}}" class="align-self-end"> <span class="badge">{{news.source}}</span>
-                                        <h4 class="card-title">{{news.title}}</h4>
-                                        <p class="textfeat" style="display: none;">{{news.description}}</p>
-                                    </a> </div>
+    <section>
+        <div class="container pt-3 pb-3 news-container">
+            <h3 class="text-center">Ultimos Títulos</h3>
+            <hr>
+            {% for news in news_data %}
+            <div class="row d-flex justify-content-center mb-2">
+                <div class="col-sm-15 col-md-8 col-lg-8 py-0 pl-3 pr-1 featcard">
+                    <div id="featured" class="carousel slide carousel-fade" data-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <div class="card bg-dark text-white"> <img class="card-img img-fluid" src="{{news.urlToImage}}" alt="">
+                                    <div class="card-img-overlay d-flex linkfeat"> 
+                                        <a href="{{news.url}}" class="align-self-end"> <span class="badge">{{news.source}}</span>
+                                            <h4 class="card-title">{{news.title}}</h4>
+                                            <p class="textfeat" style="display: none;">{{news.description}}</p>
+                                        </a> </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
+    </section>
+    
     
     <footer class="footer">
     </footer>
